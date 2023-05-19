@@ -28,7 +28,7 @@ namespace GremlinWalks
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _gremlin = new Gremlin(Content.Load<Texture2D>("gremlinSprites"));
+            _gremlin = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Gretta", "I'm pacing.");
         }
 
         protected override void Update(GameTime gameTime)

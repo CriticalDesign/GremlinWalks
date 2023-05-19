@@ -8,18 +8,23 @@ namespace GremlinWalks
     internal class Gremlin
     {
         private Texture2D _gremlinSprite;
+        private SpriteFont _gremlinFont;
         private int _rows, _cols, _currentFrame, _endCol, _animRow;
         private Vector2 _position, _direction;
         private float _speed;
+        private string _name, _chatter;
 
         private bool _paceLeft;
 
         int timeSinceLastFrame = 0;
         int millisecondsPerFrame = 100;
 
-        public Gremlin(Texture2D gremlinSprite)
+        public Gremlin(Texture2D gremlinSprite, SpriteFont gremlinFont, string name, string chatter)
         {
             _gremlinSprite = gremlinSprite;
+            _gremlinFont = gremlinFont;
+            _name = name;
+            _chatter = chatter;
 
             _rows = 5;
             _cols = 16;
@@ -30,7 +35,7 @@ namespace GremlinWalks
 
             _direction = new Vector2(0,0);
             _position = new Vector2(200, 100);
-            _speed = 150f;
+            _speed = 100f;
 
 
             //walk variables
@@ -101,10 +106,11 @@ namespace GremlinWalks
             if(_paceLeft)
                 faceLeft = SpriteEffects.FlipHorizontally;
 
-
+            string text = _name + ": " + _chatter;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null);
-            spriteBatch.Draw(_gremlinSprite, _position, sourceRectangle, Color.White, 0, new Vector2(0,0), new Vector2(4,4), faceLeft, 0);
+            spriteBatch.DrawString(_gremlinFont, text, new Vector2(_position.X - (int)(_gremlinFont.MeasureString(text).X / 2), _position.Y - 20), Color.White);
+            spriteBatch.Draw(_gremlinSprite, _position, sourceRectangle, Color.White, 0, new Vector2(width/2, height/2), new Vector2(4,4), faceLeft, 0);
             spriteBatch.End();
         }
 
