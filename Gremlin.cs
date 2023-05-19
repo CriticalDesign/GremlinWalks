@@ -11,8 +11,9 @@ namespace GremlinWalks
         private SpriteFont _gremlinFont;
         private int _rows, _cols, _currentFrame, _endCol, _animRow;
         private Vector2 _position, _direction;
-        private float _speed;
+        private float _speed, _scale;
         private string _name, _chatter;
+
 
         private bool _paceLeft;
 
@@ -24,6 +25,11 @@ namespace GremlinWalks
             _gremlinSprite = gremlinSprite;
             _gremlinFont = gremlinFont;
             _name = name;
+
+            if (chatter != "" || chatter != string.Empty)
+            {
+                chatter = "\"" + chatter + "\"";
+            }
             _chatter = chatter;
 
             _rows = 5;
@@ -36,6 +42,7 @@ namespace GremlinWalks
             _direction = new Vector2(0,0);
             _position = new Vector2(200, 100);
             _speed = 100f;
+            _scale = 3.0f;
 
 
             //walk variables
@@ -54,7 +61,7 @@ namespace GremlinWalks
                     _currentFrame = 0;
             }
 
-            pace(new Vector2(100,100), new Vector2(500,100), gameTime);
+            pace(new Vector2(50,100), new Vector2(250,100), gameTime);
         }
 
         public void pace(Vector2 startPace, Vector2 endPace, GameTime gameTime)
@@ -106,11 +113,11 @@ namespace GremlinWalks
             if(_paceLeft)
                 faceLeft = SpriteEffects.FlipHorizontally;
 
-            string text = _name + ": " + _chatter;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null);
-            spriteBatch.DrawString(_gremlinFont, text, new Vector2(_position.X - (int)(_gremlinFont.MeasureString(text).X / 2), _position.Y - 20), Color.White);
-            spriteBatch.Draw(_gremlinSprite, _position, sourceRectangle, Color.White, 0, new Vector2(width/2, height/2), new Vector2(4,4), faceLeft, 0);
+            spriteBatch.DrawString(_gremlinFont, _name, new Vector2(_position.X - (int)(_gremlinFont.MeasureString(_name).X / 2), _position.Y - 80), Color.Yellow);
+            spriteBatch.DrawString(_gremlinFont, _chatter, new Vector2(_position.X - (int)(_gremlinFont.MeasureString(_chatter).X / 2), _position.Y - 60), Color.White);
+            spriteBatch.Draw(_gremlinSprite, _position, sourceRectangle, Color.White, 0, new Vector2(width/2, height/2), new Vector2(_scale, _scale), faceLeft, 0);
             spriteBatch.End();
         }
 
