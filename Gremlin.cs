@@ -18,6 +18,8 @@ namespace GremlinWalks
         private string _moveType;
         private Color _color;
 
+        Random _rng;
+
 
         private bool _paceLeft;
 
@@ -45,7 +47,7 @@ namespace GremlinWalks
                 chatter = "\"" + chatter + "\"";
             
             _chatter = chatter;
-
+            _rng = new Random();
             
             _rows = 5;
             _cols = 16;
@@ -55,11 +57,13 @@ namespace GremlinWalks
             {
                 _animRow = 1;
                 _endCol = 8;
+                _currentFrame = _rng.Next(0,8);
             }
             else
             {
                 _animRow = 0;
                 _endCol = 16;
+                _currentFrame = _rng.Next(0, 15);
             }
 
             _path = new List<Vector2>();
@@ -108,8 +112,9 @@ namespace GremlinWalks
         public void SetPath() { 
             _path.Add(new Vector2(400, 400));
             _path.Add(new Vector2(700, 400));
-            _path.Add(new Vector2(700, 475));
-            _path.Add(new Vector2(400, 475));
+            _path.Add(new Vector2(700, 575));
+            _path.Add(new Vector2(550, 475));
+            _path.Add(new Vector2(400, 575));
         }
 
         public void Update(GameTime gameTime)
@@ -124,34 +129,33 @@ namespace GremlinWalks
                     _currentFrame = 0;
             }
 
-            if (_moveType == "pace")
-                pace(new Vector2(50, 100), new Vector2(250, 100), gameTime);
-            else if (_moveType == "random")
+
+            if (_moveType == "random")
                 RandomWalk(gameTime);
             else if (_moveType == "chase")
                 move(_chaseTarget, gameTime);
             else if (_moveType == "bounce")
                 bounce(gameTime);
-            else if (_moveType == "path" || _moveType == "circle")
+            else if (_moveType == "path" || _moveType == "circle" || _moveType == "pace")
                 path(gameTime);
         }
 
         //TODO: There are some issues in here, it's changing too frequently.
         public void RandomWalk(GameTime gameTime)
         {
-            Random rng  = new Random();
+            _rng  = new Random();
             randomHTimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (randomHTimeSinceLastFrame > randomHMillisecondsPerFrame)
             {
                 randomHTimeSinceLastFrame -= randomHMillisecondsPerFrame;
-                randomDeltaX = rng.Next((int)-_speed, (int)_speed);
+                randomDeltaX = _rng.Next((int)-_speed, (int)_speed);
             }
 
             randomVTimeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (randomVTimeSinceLastFrame > randomVMillisecondsPerFrame)
             {
                 randomVTimeSinceLastFrame -= randomVMillisecondsPerFrame;
-                randomDeltaY = rng.Next((int)-_speed, (int)_speed);
+                randomDeltaY = _rng.Next((int)-_speed, (int)_speed);
             }
 
             if (randomDeltaX > 0)
@@ -168,6 +172,12 @@ namespace GremlinWalks
             _position.X += (randomDeltaX * (float)gameTime.ElapsedGameTime.TotalSeconds);
             _position.Y += (randomDeltaY * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
+        }
+
+        public void SetPace(Vector2 start, Vector2 end)
+        {
+            _path.Add(start);
+            _path.Add(end);
         }
 
         public void SetCircle(float radius)
@@ -241,9 +251,9 @@ namespace GremlinWalks
             //float x = _direction.X;
             //float y = _direction.Y;
 
-            if (_position.X <  50 || _position.X > 300)
+            if (_position.X <  50 || _position.X > 400)
                 _direction.X = -_direction.X;
-            if (_position.Y < 300 || _position.Y > 500)
+            if (_position.Y < 400 || _position.Y > 575)
                 _direction.Y = -_direction.Y;
 
             if (_direction.X > 0)
@@ -272,7 +282,7 @@ namespace GremlinWalks
             }
             if(_destination >= _path.Count) { _destination = 0; }
 
-            SetChatter(_path[_destination] + "");
+            //SetChatter(_path[_destination] + "");
 
             move(_path[_destination], gameTime);
         }

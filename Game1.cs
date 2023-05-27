@@ -47,17 +47,18 @@ namespace GremlinWalks
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _music = Content.Load<Song>("chiptune");
+            _music = Content.Load<Song>("chiptune"); //https://pixabay.com/music/video-games-chiptune-grooving-142242/
             MediaPlayer.Play(_music);
 
             _louisa = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Louisa", "I'm chasing.", "chase", Color.Yellow);
             _louisa.SetStartPosition(new Vector2(50, 400));
             _gretl = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Gretl", "I'm pacing.", "pace", Color.White);
-            _gretl.SetStartPosition(new Vector2(100, 100));
+            _gretl.SetStartPosition(new Vector2(100, 150));
+            _gretl.SetPace(new Vector2(50, 150), new Vector2(250, 150));
             _kurt = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Kurt", "I'm idle.", "idle", Color.Orange);
             _kurt.SetStartPosition(new Vector2(550, 200));
             _liesl = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Liesl", "I'm circling.", "circle", Color.Red);
-            _liesl.SetStartPosition(new Vector2(665, 200));
+            _liesl.SetStartPosition(new Vector2(450, 200));
             _liesl.SetCircle(10f);
             _marta = new Gremlin(Content.Load<Texture2D>("gremlinSprites"), Content.Load<SpriteFont>("gremlinFont"), "Marta", "I'm random.", "random", Color.Pink);
             _marta.SetStartPosition(new Vector2(700, 500));
@@ -69,12 +70,12 @@ namespace GremlinWalks
             _friedrich.SetPath();
 
 
-            _gremlins.Add(_louisa);
+            //_gremlins.Add(_louisa);
+            //_gremlins.Add(_marta);
+            //_gremlins.Add(_brigitta);
             _gremlins.Add(_gretl);
             _gremlins.Add(_kurt);
             _gremlins.Add(_liesl);
-            _gremlins.Add(_marta);
-            _gremlins.Add(_brigitta);
             _gremlins.Add(_friedrich); 
 
 
